@@ -1,2 +1,2 @@
-# Flutter-tfliteYolo
-This application consist of tflite yolo detection in flutter.
+# Android-tfliteYolo
+This application consist of tflite yolo detection in Java.
