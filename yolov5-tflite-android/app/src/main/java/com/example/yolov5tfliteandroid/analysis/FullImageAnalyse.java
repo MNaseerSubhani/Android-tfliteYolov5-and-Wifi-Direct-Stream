@@ -35,34 +35,33 @@ public class FullImageAnalyse implements ImageAnalysis.Analyzer {
 
     public static class Result{
 
-        public Result(long costTime, Bitmap bitmap) {
+        public Result(long costTime, Bitmap bitmap,String label) {
             this.costTime = costTime;
             this.bitmap = bitmap;
+            this.label = label;
         }
         long costTime;
         Bitmap bitmap;
+        String label;
     }
 
     ImageView boxLabelCanvas;
     PreviewView previewView;
     int rotation;
-    private TextView inferenceTimeTextView;
-    private TextView frameSizeTextView;
     ImageProcess imageProcess;
+    private TextView result_;
     private Yolov5TFLiteDetector yolov5TFLiteDetector;
 
     public FullImageAnalyse(Context context,
                             PreviewView previewView,
                             ImageView boxLabelCanvas,
                             int rotation,
-                            TextView inferenceTimeTextView,
-                            TextView frameSizeTextView,
+                            TextView result_,
                             Yolov5TFLiteDetector yolov5TFLiteDetector) {
         this.previewView = previewView;
         this.boxLabelCanvas = boxLabelCanvas;
         this.rotation = rotation;
-        this.inferenceTimeTextView = inferenceTimeTextView;
-        this.frameSizeTextView = frameSizeTextView;
+        this.result_ = result_;
         this.imageProcess = new ImageProcess();
         this.yolov5TFLiteDetector = yolov5TFLiteDetector;
     }
@@ -72,7 +71,7 @@ public class FullImageAnalyse implements ImageAnalysis.Analyzer {
         int previewHeight = previewView.getHeight();
         int previewWidth = previewView.getWidth();
 
-        // 这里Observable将image analyse的逻辑放到子线程计算, 渲染UI的时候再拿回来对应的数据, 避免前端UI卡顿
+
         Observable.create( (ObservableEmitter<Result> emitter) -> {
             long start = System.currentTimeMillis();
 
@@ -98,11 +97,11 @@ public class FullImageAnalyse implements ImageAnalysis.Analyzer {
                     uvPixelStride,
                     rgbBytes);
 
-            // 原图bitmap
+
             Bitmap imageBitmap = Bitmap.createBitmap(imagewWidth, imageHeight, Bitmap.Config.ARGB_8888);
             imageBitmap.setPixels(rgbBytes, 0, imagewWidth, 0, 0, imagewWidth, imageHeight);
 
-            // 图片适应屏幕fill_start格式的bitmap
+
             double scale = Math.max(
                     previewHeight / (double) (rotation % 180 == 0 ? imagewWidth : imageHeight),
                     previewWidth / (double) (rotation % 180 == 0 ? imageHeight : imagewWidth)
@@ -113,12 +112,12 @@ public class FullImageAnalyse implements ImageAnalysis.Analyzer {
                     rotation % 180 == 0 ? 90 : 0, false
             );
 
-            // 适应preview的全尺寸bitmap
+
             Bitmap fullImageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imagewWidth, imageHeight, fullScreenTransform, false);
-            // 裁剪出跟preview在屏幕上一样大小的bitmap
+
             Bitmap cropImageBitmap = Bitmap.createBitmap(fullImageBitmap, 0, 0, previewWidth, previewHeight);
 
-            // 模型输入的bitmap
+
             Matrix previewToModelTransform =
                     imageProcess.getTransformationMatrix(
                             cropImageBitmap.getWidth(), cropImageBitmap.getHeight(),
@@ -141,39 +140,38 @@ public class FullImageAnalyse implements ImageAnalysis.Analyzer {
 //            white.setColor(Color.WHITE);
 //            white.setStyle(Paint.Style.FILL);
 //            cropCanvas.drawRect(new RectF(0,0,previewWidth, previewHeight), white);
-            // 边框画笔
+
             Paint boxPaint = new Paint();
             boxPaint.setStrokeWidth(5);
             boxPaint.setStyle(Paint.Style.STROKE);
             boxPaint.setColor(Color.RED);
-            // 字体画笔
+
             Paint textPain = new Paint();
             textPain.setTextSize(50);
             textPain.setColor(Color.RED);
             textPain.setStyle(Paint.Style.FILL);
-
+            String label = null;
             for (Recognition res : recognitions) {
                 RectF location = res.getLocation();
-                String label = res.getLabelName();
+                label = res.getLabelName();
                 float confidence = res.getConfidence();
                 modelToPreviewTransform.mapRect(location);
-                cropCanvas.drawRect(location, boxPaint);
-                cropCanvas.drawText(label + ":" + String.format("%.2f", confidence), location.left, location.top, textPain);
+//                cropCanvas.drawRect(location, boxPaint);
+//                cropCanvas.drawText(label + ":" + String.format("%.2f", confidence), location.left, location.top, textPain);
+                break;
             }
             long end = System.currentTimeMillis();
             long costTime = (end - start);
             image.close();
-            emitter.onNext(new Result(costTime, emptyCropSizeBitmap));
+            emitter.onNext(new Result(costTime, emptyCropSizeBitmap, label));
 //            emitter.onNext(new Result(costTime, imageBitmap));
 
-        }).subscribeOn(Schedulers.io()) // 这里定义被观察者,也就是上面代码的线程, 如果没定义就是主线程同步, 非异步
-                // 这里就是回到主线程, 观察者接受到emitter发送的数据进行处理
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                // 这里就是回到主线程处理子线程的回调数据.
+
                 .subscribe((Result result) -> {
                     boxLabelCanvas.setImageBitmap(result.bitmap);
-                    frameSizeTextView.setText(previewHeight + "x" + previewWidth);
-                    inferenceTimeTextView.setText(Long.toString(result.costTime) + "ms");
+                    result_.setText(result.label);
                 });
 
     }

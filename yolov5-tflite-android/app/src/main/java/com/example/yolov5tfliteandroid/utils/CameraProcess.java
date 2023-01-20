@@ -37,11 +37,7 @@ public class CameraProcess {
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA",
             "android.permission.WRITE_EXTERNAL_STORAGE"};
 
-    /**
-     * 判断摄像头权限
-     * @param context
-     * @return
-     */
+
     public boolean allPermissionsGranted(Context context) {
         for (String permission : REQUIRED_PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -51,18 +47,13 @@ public class CameraProcess {
         return true;
     }
 
-    /**
-     * 申请摄像头权限
-     * @param activity
-     */
+
     public void requestPermissions(Activity activity) {
         ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
     }
 
-    /**
-     * 打开摄像头，提供对应的preview, 并且注册analyse事件, analyse就是要对摄像头每一帧进行分析的操作
-     */
-    public void startCamera(Context context, ImageAnalysis.Analyzer analyzer, PreviewView previewView) {
+
+    public void startCamera(Context context, ImageAnalysis.Analyzer analyzer, PreviewView previewView,Boolean flag_) {
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(context);
         cameraProviderFuture.addListener(new Runnable() {
@@ -84,10 +75,16 @@ public class CameraProcess {
 //                            .setTargetRotation(Surface.ROTATION_90)
                             .build();
 //                    Log.i("builder", previewView.getHeight()+"/"+previewView.getWidth());
-                    CameraSelector cameraSelector = new CameraSelector.Builder()
-                            .requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
+                    CameraSelector cameraSelector;
+                    if(flag_ == false) {
+                        cameraSelector = new CameraSelector.Builder()
+                                .requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
+                    }else{
+                        cameraSelector = new CameraSelector.Builder()
+                                .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build();
+                    }
                     previewBuilder.setSurfaceProvider(previewView.createSurfaceProvider());
-                    // 加多这一步是为了切换不同视图的时候能释放上一视图所有绑定事件
+
                     cameraProvider.unbindAll();
                     cameraProvider.bindToLifecycle((LifecycleOwner) context, cameraSelector, imageAnalysis, previewBuilder);
 
@@ -99,10 +96,7 @@ public class CameraProcess {
     }
 
 
-    /**
-     * 打印输出摄像头支持的宽和高
-     * @param activity
-     */
+
     public void showCameraSupportSize(Activity activity) {
         CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
