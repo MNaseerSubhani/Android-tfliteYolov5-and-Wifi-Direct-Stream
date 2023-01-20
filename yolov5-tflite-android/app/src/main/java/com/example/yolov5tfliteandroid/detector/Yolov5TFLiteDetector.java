@@ -46,13 +46,13 @@ import java.util.PriorityQueue;
 
 public class Yolov5TFLiteDetector {
 
-    private final Size INPNUT_SIZE = new Size(320, 320);
-    private final int[] OUTPUT_SIZE = new int[]{1, 6300, 57};
+    private final Size INPNUT_SIZE = new Size(416, 416);
+    private final int[] OUTPUT_SIZE = new int[]{1, 10647, 57};
     private Boolean IS_INT8 = false;
     private final float DETECT_THRESHOLD = 0.85f;
     private final float IOU_THRESHOLD = 0.65f;
     private final float IOU_CLASS_DUPLICATED_THRESHOLD = 0.8f;
-    private final String MODEL_YOLOV5S = "best_1-fp16.tflite";
+    private final String MODEL_YOLOV5S = "best_2-fp16.tflite";
 ////    private final String MODEL_YOLOV5S = "yolov5s-dynamic.tflite";
 //    private final String MODEL_YOLOV5N =  "yolov5n-fp16-320.tflite";
 //    private final String MODEL_YOLOV5M = "yolov5m-fp16-320.tflite";
