@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/predefined"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#020202"
+    tools:context=".Settings">
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="223dp"
+        android:layout_height="34dp"
+        android:layout_alignParentTop="true"
+        android:text="Practice Mode"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.356" />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="222dp"
+        android:layout_height="37dp"
+        android:layout_alignParentTop="true"
+        android:text="Notifications"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.422" />
+
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="221dp"
+        android:layout_height="34dp"
+        android:layout_alignParentTop="true"
+        android:text="Voice Cue"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+
+    <Switch
+        android:id="@+id/switch4"
+        android:layout_width="226dp"
+        android:layout_height="35dp"
+        android:layout_alignParentTop="true"
+        android:text="Hide Result"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.564" />
+
+    <Switch
+        android:id="@+id/topres"
+        android:layout_width="233dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:text="Top Result"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.63" />
+
+    <Switch
+        android:id="@+id/vibrate"
+        android:layout_width="233dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:text="Vibrate Cue"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.697" />
+
+    <Button
+        android:id="@+id/now_perform"
+        android:layout_width="290dp"
+        android:layout_height="61dp"
+        android:text="PERFORM"
+        android:background="@drawable/rounded_corners"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.57"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="585dp"
+        android:layout_height="293dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/logo2" />
+
+    <RadioGroup
+        android:id="@+id/RadioGroup"
+        android:layout_width="173dp"
+        android:layout_height="93dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.866">
+
+        <RadioButton
+            android:id="@+id/camfront"
+            android:layout_width="138dp"
+            android:layout_height="35dp"
+            android:checked="true"
+            android:text="Front Camera" />
+
+        <RadioButton
+            android:id="@+id/camback"
+            android:layout_width="138dp"
+            android:layout_height="35dp"
+            android:text="Back Camera" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/dayt"
+        android:layout_width="91dp"
+        android:layout_height="22dp"
+        android:text="DayTrick"
+        android:textColor="#FFFEFE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.837"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.227" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="119dp"
+        android:layout_height="58dp"
+        android:text="Predefined List"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.236"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.833" />
+</androidx.constraintlayout.widget.ConstraintLayout>
